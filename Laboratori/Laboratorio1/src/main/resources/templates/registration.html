@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en", xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <meta charset="UTF-8">
+    <title>Registrazione</title>
+    <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+</head>
+<body>
+<h1>Registrazione</h1>
+<h2><a href="/">Home</a></h2>
+
+<div>
+    <span th:text="${registrazione}"></span>
+</div>
+<div>
+<h2>Form:</h2>
+<form method="post" th:action="@{/register}"  th:command="${command}">
+
+    Nome
+    <br>
+    <input type="text" name="nome" th:field="*{command.nome}" th:value="${command.getNome()}">
+    <div th:if="${#fields.hasErrors('command.nome')}" class="form-error">
+        <span th:errors="*{command.nome}" class="text-danger"></span>
+    </div>
+    <br>
+
+    Cognome
+    <br>
+    <input type="text" name="cognome" th:field="*{command.cognome}" th:value="${command.getCognome()}">
+    <div th:if="${#fields.hasErrors('command.cognome')}" class="form-error">
+        <span th:errors="*{command.cognome}" class="text-danger"></span>
+    </div>
+    <br>
+
+    Email
+    <br>
+    <input type="text" name="email" th:field="*{command.email}">
+    <div th:if="${#fields.hasErrors('command.email')}" class="form-error">
+        <span th:errors="*{command.email}" class="text-danger"></span>
+    </div>
+    <br>
+
+
+    Password
+    <br>
+    <input type="password" name="password"  th:field="*{command.password}" >
+    <div th:if="${#fields.hasErrors('command.password')}" class="form-error">
+        <span th:errors="*{command.password}" class="text-danger"></span>
+    </div>
+    <br>
+
+    Ripetere password
+    <br>
+    <input type="password" name="passwordValidation" th:field="*{command.passwordValidation}">
+    <div th:if="${#fields.hasErrors('command.passwordValidation')}" class="form-error">
+        <span th:errors="*{command.passwordValidation}" class="text-danger"></span>
+    </div>
+    <br>
+
+
+    <input type="checkbox" name="privacyCheck" th:field="*{command.privacyCheck}"> Informativa sulla privacy
+    <div th:if="${#fields.hasErrors('command.privacyCheck')}" class="form-error">
+        <span th:errors="*{command.privacyCheck}" class="text-danger"></span>
+    </div>
+    <br>
+    <input type="submit" value="SIGN IN">
+
+</form>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="../js/bootstrap.js" th:href="@{/js/bootstrap.js}"></script>
+</body>
+</html>

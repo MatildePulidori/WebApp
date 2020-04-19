@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en", xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <meta charset="UTF-8">
+    <title>Pagina privata</title>
+    <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+</head>
+<body>
+<h1>Sezione privata</h1>
+
+<form method="post" th:action="@{/logout}" >
+    <input type="submit" value="LOGOUT">
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="../js/bootstrap.js" th:href="@{/js/bootstrap.js}"></script>
+</body>
+</html>
