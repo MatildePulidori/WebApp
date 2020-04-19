@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
+import java.io.FileNotFoundException;
 import java.io.Reader;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +32,6 @@ public interface TeamServices {
 
     List<Boolean> addAll(List<StudentDTO> students);
     List<Boolean> enrollAll(List<String> studentIds, String courseName);
-    List<Boolean> addAndEnroll(Reader r, String courseName);
+    List<Boolean> addAndEnroll(Reader r, String courseName) throws FileNotFoundException;
 
 }

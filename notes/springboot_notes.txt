@@ -1,0 +1,33 @@
+Spring Initializer è un wizard specializzato per la realizzazione di progetti basati su Spring Boot.
+L'Initializer dice di quali librerie si ha bisogno.
+
+Bisogna scegliere quali librerie si pensa di aver bisogno: 1) Developer tools -> Lombok, 2) Web -> Spring Web.
+
+Abbiamo molte cartelle, che costituiscono la struttura tipica di un file Maven:
+- file pom.xml
+- cartella src
+- cartella src/main 
+  x) src/main/java: classe Boot1Application
+  x) src/main/resources
+     o) src/main/resources/static : vuota
+     o) src/main/resources/templates : vuota
+     o) src/main/resources/application.properties file
+- cartella src/test/java 
+
+Boot1Application ha all'interno il metodo run, ed è etichettata con @SpringBootApplication, cosa che permette al codice di fare varie cose.
+
+Tomcat initialized with port(s): 8080 (http)
+Abbiamo inserito tra le nostre dipendenze (vedi file pom.xml) c'è un particolare artifactId: spring-boot-starter-web. Questo artifactId fa capire che springBoot vuole fare un'applicazione web, che ha bisogno di un Tomcat, quindi in automatico lo fa partire. Tomcat embedded, non stand-alone: o.s.b.w.embedded.tomcat.TomcatWebServer.
+
+In realtà se chiamiamo localhost:8080 otteniamo:
+<<This application has no explicit mapping for /error, so you are seeing this as a fallback.
+Sat Mar 28 16:02:19 CET 2020
+There was an unexpected error (type=Not Found, status=404).
+No message available>>
+Abbiamo provato a chiedere una URL, ma siccome non avevamo dato istruzioni significative, springboot ha lanciato tomcat, poi gli è stato chiesto qualcosa che non c'è, e viene generata un'eccezione. guarda se esiste almeno una pagina /error, ma nemmeno quella c'è.
+
+
+Chi è che ha fatto partire e chiamato la classe Home? SpringBoot, dato che la classe Home era etichettata come RestController, ne ha creato un'istanza quando è stato avviato nel suo container. Questa istanza però ha campo privato nullo.
+
+Creiamo TimpeStampServiceImplementation.java.
+ 

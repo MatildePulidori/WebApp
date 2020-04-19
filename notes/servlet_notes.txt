@@ -1,0 +1,10 @@
+/webapps/ROOT: servita per default da parte del server se aprissi l'app su localhost 8080.
+
+/webapps: dentro copio  ~/IdeaProjects/servlet_project/target/servlet_project.war .
+
+Session Id: Prima sono diverse due session id invocate consecutivamente, perché la seconda nuova richiesta parte con un id differente, in modo che non sia tacciabile; poi, una volta confermato che non è una persona nuova ma un qualcuno che aveva già fatto una richiesta, quindi tornano uguali.
+
+Servlet: sono oggetti che permettono di trasformare una richiesta in una risposta, processando dei "pezzi".
+
+Se bisogna servire un contenuto statico è sufficiente metterlo nella cartella webapp, e funziona.
+Il container ha un filtro a priori che non rende accessibile qualunque cosa che inizi con web-in o meta-in

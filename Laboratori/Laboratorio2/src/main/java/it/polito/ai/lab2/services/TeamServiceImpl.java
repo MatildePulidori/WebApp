@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
@@ -187,7 +189,11 @@ public class TeamServiceImpl implements TeamServices {
     }
 
     @Override
-    public List<Boolean> addAndEnroll(Reader r, String courseName) {
+    public List<Boolean> addAndEnroll(Reader r, String courseName) throws FileNotFoundException {
+        r = new FileReader("../mydata/data.csv");
+
+
+
         return null;
     }
 }

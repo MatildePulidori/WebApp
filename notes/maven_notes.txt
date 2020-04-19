@@ -1,0 +1,36 @@
+ls
+ls -lR src: vedo la struttura di src
+mvn --version: per vedere che sia installato maven 
+printenv: bisogna assicurarsi che home sia nella stessa cartella in cui è il file xml
+min package: per compilare il nostro progetto (crea il progetto e produce il suo packaging di default). viene creata la cartella target dove sta il file jar di default
+
+<properties>: tag che serve per aggiornare la versione di maven, per il compiler (sia per il codice sorgente sia per il codice generato).
+nella cartella target troviamo il file prj1.-1.0-SNAPSHOT.jar (prj1 è il nome del nostro progetto, 1.0-SNAPSHOT è la sua versione. se cambiassi versione con solo 1.0 e rieseguissi -dopo aver lanciato min clean- riotteniamo un file jar con il nome prj1-1.0.jar).
+
+jar tvf  target/prj1-1.0.jar |more: (t=table, v=verboso, f=file) per vedere cosa c'è dentro il file prj1-1.0.jar.
+
+java -cp target/prj1-1.0.jar it.polito.ai.prj1.Main
+: eseguire il file, usando come class path quello che si trova dentro il file jar ed esegui it.polito.ai.prj1.Main
+
+
+dependencies>: libreria jackson
+
+java -cp target/prj1-1.0.jar it.polito.ai.prj1.Main: 
+java è basato su un meccanismo di dynamic loading dà l'errore java.lang.NoClassDefFoundError.
+
+
+External libraries: 
+1.8 --> quella di java
+Maven: com.fasterxml.jackson.core-databind:2.9.9.3 --> quella caricata
+
+Maven: com.fasterxml.jackson.core:jackscon-core:2.9.9
+Maven: com.fasterxml.jackson.core:jackson-annotation:2.9.0
+--> queste ultime due sono dipendenze della terza.
+Maven per noi ha scaricato la dipendenza che ci servivano.
+
+con ls ~/.m2/repository/com/festerxml/jackson/core/: vedo che all'interno ci sono tre sottocartelle (annotation, core, databind). all'interno di ognuna ci sono le varie versioni delle librerie, e dentro ogni libreria ci sono i file jar da eseguire, il file pom da cui deriva e una serie di sha1 per controllare l'integrità e l'autenticità dei dati.
+Quindi anche se ho le librerie, mi da errore: come faccio ad accedervi durante l'esecuzione?
+
+
+plugin uberjar: fa tutto (quelli precedenti non sono necessari), con questo otteniamo un progetto più grosso che si porta dietro tutte le dipendenze.
+

@@ -1,0 +1,129 @@
+docker --version: per chiedere la versione del docker che si ha.
+
+docker ps: per chiedere al docker host quali processi sta facendo girare.
+
+docker --help: lista di possibili comandi da poter mandare all'host.
+
+docker ps --help: cosa permette di fare il comando 'ps'.
+con -a vedo tutti i container, anche quelli attualmente fermi. con -f posso mettere dei filtri. con -n posso chiedere di vedere gli ultimi container creati. con -l posso vedere l'ultimo container creato. con -q posso chiedere solo l'id numerico del container. con -s posso chiedere la dimensione.
+esempio: docker ps -a -s. 
+
+docker run hello-world: 
+Se il nome del programma scritto (in questo caso 'hello-world', ma se per sbaglio scrivessimo 'helloworld'...) non venisse trovato, docker andrebbe a cercare in rete un'immagine chiamata col nome scritto. 
+Scritto giusto, viene trovato; il terminale risponde:
+ Hello from Docker!
+ This message shows that your installation appears to be working correctly.
+ To generate this message, Docker took the following steps:
+  1. The Docker client contacted the Docker daemon.
+  2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+     (amd64)
+  3. The Docker daemon created a new container from that image which runs the
+     executable that produces the output you are currently reading.
+  4. The Docker daemon streamed that output to the Docker client, which sent it
+     to your terminal.
+ To try something more ambitious, you can run an Ubuntu container with:
+  $ docker run -it ubuntu bash
+ Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+ For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+[1] Questo ci dice che il docker client ha contattato il docker deamon, il quale è andato sul docker hub, e si è fatto dare [2] quell'immagine che si chiama 'hello-world'; il docker hub gliel'ha restituita per la versione corretta del docker deamon che sta girando (amd64). [3] L'immagine, trasferita in locale dentro il mio host, è diventato un container, ovvero il docker deamon ha creato un nuovo container a partire da  quell'immagine (quell'immagine lì era fatta di x strati, ne è stato aggiunto uno in più, l'x+1 esimo strato, di tipo R/W). [4] Viene lanciato l'eseguibile.
+
+
+docker run -it ubuntu bash: 
+Si va a cercare, se non lo ha ancora, un'immagine chiamata ubuntu (eventualmente la si prende dal docker hub, la si porta in locale), la si fa diventare un container (aggiungendoci uno strato R/W). La si esegue con 'bash' che fa apparire una shell e in modalità '-it', modalità interattiva, dove non solo lo stdout ci viene copiato indietro, ma anche lo stdin viene mandato dal terminale al processo, così da poterlo  comandare. 
+ Unable to find image 'ubuntu:latest' locally
+ latest: Pulling from library/ubuntu
+ 5bed26d33875: Pull complete 
+ f11b29a9c730: Pull complete 
+ 930bda195c84: Pull complete 
+ 78bf9a5ad49e: Pull complete 
+ Digest: sha256:bec5a2727be7fff3d308193cfde3491f8fba1a2ba392b7546b43a051853a341d
+ Status: Downloaded newer image for ubuntu:latest
+Vengono fatti anche i calcoli per vedere che ciò che è arrivato sia integro, e adesso stiamo nel contesto di ubuntu: 
+ root@9f9344ba5b14:/#
+Se faccio 'uname' viene fuori Linux, a conferma. Se faccio 'ls', vedo tutte le directory. 
+ 
+root@9f9344ba5b14:/# cd /tmp: la cartella è vuota. ci posso mettere dentro un file
+root@9f9344ba5b14:/tmp# touch test.txt: ci metto il file test.txt (vuoto)
+
+root@9f9344ba5b14:/tmp# date > test.txt
+root@9f9344ba5b14:/tmp# cat test.txt
+Mon Apr 13 11:40:28 UTC 2020
+Vadiamo la data di esecuzione del file
+
+---------------------- IN UNA NUOVA FINESTRA TERMINALE ----------------------------
+
+docker exec -it <containerId> bash: eseguendo questo comando in una nuova finestra, possiamo mandare in esecuzione il container. siamo nello stesso contesto di prima.
+ root@9f9344ba5b14:/# cd /tmp
+ root@9f9344ba5b14:/tmp# cat test.txt: orrendo le stesse cose di prima.
+ root@9f9344ba5b14:/tmp# exit: esco.
+
+docker run -it ubuntu: posso anche lanciare una seconda macchina, sempre con ubuntu. otterrò una seconda macchina.
+ root@29b139671067:/# con ls entro nella cartella tmp
+ root@29b139671067:/tmp#: che è vuota.
+
+Queste macchine condividono il 99,99% del file system. La cartella tmp è separata:  vediamo l'immagine, ovvero quella che è stata scaricata dal docker hub. Quando la modifico, come ho fatto prima, aggiungendo test.txt, vedo quella privata che non è da nessun'altra parte. Potrei creamici dentro la 'mia' versione del file test.txt.
+I due container condividono la maggior parte del file system, ma sono a tutti gli effetti indipendenti. 
+Dal punto di vista del mio sistema operativo sono due processi, ognuno con il proprio name space. Tra loro non possono comunicare.
+
+---------------------- PORTAINER --------------------------------------------------
+
+docker volume create portainer_data
+
+docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
+
+andiamo ad aprire il terminale sulla porta 9000: localhost:9000/
+si ha cosi modo di entrare e gestire le macchine docker che stanno girando.
+dato che la connessione con il docker engine è fatta via REST, questa interfaccia dà la possibilità di fare molte cose: stoppare un container, inviare dei comandi, vedere quanta memoria stanno consumando, etc.
+
+docker ps -a
+docker restart  9f9344ba5b14
+docker exec -it 9f9344ba5b14 bash
+root@9f9344ba5b14:/# cat /tmp/test.txt: ritrovo il file creato prima
+
+
+docker system prune: 
+	WARNING! This will remove:
+  	- all stopped containers
+  	- all networks not used by at least one container
+  	- all dangling images
+  	- all dangling build cache
+	Are you sure you want to continue? [y/N] yes
+Verrà eliminato tutto, sei si fa docker ps -a si vede che non c'è più nulla: la prune non elimina subito tutto comunque.  
+
+docker run --name some-mariadb -e MYSQL_ROOT_PASSWORD=pwd -d mariadb
+docker run -e MYSQL_ROOT_PASSWORD=pwd -p 3306:3306 -d mariadb 
+
+----------------------       COMANDI --------------------------------------------------
+
+finestra1 => 
+docker run -it gcc
+docker ps
+CONTAINER ID        IMAGE                 COMMAND                  CREATED             STATUS              PORTS                                            NAMES
+a2f09dd4d0e0        gcc                   "bash"                   59 seconds ago      Up 58 seconds                                                        pensive_haibt
+3884a989d0ea        mariadb               "docker-entrypoint.s…"   16 hours ago        Up 16 hours         0.0.0.0:3306->3306/tcp                           peaceful_einstein
+859e2226ccd1        mariadb               "docker-entrypoint.s…"   16 hours ago        Up 16 hours         3306/tcp                                         some-mariadb
+932a41d45297        portainer/portainer   "/portainer"             18 hours ago        Up 18 hours         0.0.0.0:8000->8000/tcp, 0.0.0.0:9000->9000/tcp   portainer
+9f9344ba5b14        ubuntu                "bash"                   21 hours ago        Up 18 hours                                                          compassionate_elgamal
+
+
+finestra2 => 
+pushd ~/docker/ 
+docker cp hello.c a2f09dd4d0e0:/tmp: copio il file hello nella cartella del container gcc appena creato
+gcc -o hello hello.c: compilo
+./hello: eseguo
+
+docker cp a2f09dd4d0e0:/tmp/hello .
+
+
+
+
+----------------------     SPRING BOOT   --------------------------------------------------
+
+creo il docker file.
+nella cartella docker1/, faccio: docker build -t my app .
+docker run -p 8080:8080 myapp:latest: le cose sono eseguite nel contesto del container!
+
+
