@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class CourseDTO {
 
-    String name;
-    int min;
-    int max;
-    boolean enabled;
+    private String name;
+    private int min;
+    private int max;
+    private boolean enabled;
 
 }

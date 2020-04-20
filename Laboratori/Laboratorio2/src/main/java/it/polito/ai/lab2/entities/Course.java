@@ -14,17 +14,17 @@ import java.util.List;
 public class Course {
 
     @Id
-    String name;
+    private String name;
 
     @ManyToMany(mappedBy = "courses")
-    List<Student> students = new ArrayList<>();
+    private List<Student> students = new ArrayList<>();
 
     @OneToMany(mappedBy = "course")
-    List<Team> teams = new ArrayList<>();
+    private List<Team> teams = new ArrayList<>();
 
-    int min;
-    int max;
-    boolean enabled;
+    private int min;
+    private int max;
+    private boolean enabled;
 
 
     public Student addStudent(Student student){
@@ -38,6 +38,38 @@ public class Course {
     public boolean contains(Student student){
         for (Student s: students) {
             if (s.getId()== student.getId()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Team addTeam(Team team){
+        if (team == null){
+            return null;
+        }
+        if (this.contains(team)){
+            return null;
+        }
+        teams.add(team);
+        return team;
+    }
+
+    public boolean removeTeam(Team team){
+        if (team == null){
+            return false;
+        }
+        if (!this.contains(team)){
+            return false;
+        }
+        this.teams.remove(team);
+        team.removeCourse(this);
+        return true;
+
+    }
+    public boolean contains(Team team){
+        for (Team t: teams) {
+            if (t.getId() == team.getId()){
                 return true;
             }
         }

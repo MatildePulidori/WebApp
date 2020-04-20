@@ -2,6 +2,7 @@ package it.polito.ai.lab2.services;
 
 import it.polito.ai.lab2.dtos.CourseDTO;
 import it.polito.ai.lab2.dtos.StudentDTO;
+import it.polito.ai.lab2.dtos.TeamDTO;
 import it.polito.ai.lab2.entities.Course;
 import it.polito.ai.lab2.entities.Student;
 import it.polito.ai.lab2.repositories.CourseRepository;
@@ -208,5 +209,20 @@ public class TeamServiceImpl implements TeamServices {
         }
 
         return addenroll;
+    }
+
+    @Override
+    public List<TeamDTO> getTeamsForStudent(String studentId) {
+        return null;
+    }
+
+    @Override
+    public List<StudentDTO> getMembers(Long teamId) {
+        return null;
+    }
+
+    @Override
+    public List<TeamDTO> getTeamForCourse(String courseName) {
+        return null;
     }
 }
