@@ -23,7 +23,6 @@ public class Student {
     public Course addCourse(Course course) {
         if (!this.contains(course)){
             courses.add(course);
-            if (course.contains(this)) course.addStudent(this);
             return course;
         }
         return null;

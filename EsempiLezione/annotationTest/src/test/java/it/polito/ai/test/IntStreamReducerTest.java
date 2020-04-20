@@ -24,12 +24,12 @@ class IntStreamReducerTest {
     }
 
     @Test
-    void testSimpleStream(){
+    void testSimpleStream() {
         assertEquals(6, isr.reduce(IntStream.of(1, 2, 3)));
     }
 
     @Test
-    void testEmptyStream(){
-        assertThrows(RuntimeException.class, ()->isr.reduce(IntStream.empty()));
+    void testEmptyStream() {
+        assertThrows(RuntimeException.class, () -> isr.reduce(IntStream.empty()));
     }
 }

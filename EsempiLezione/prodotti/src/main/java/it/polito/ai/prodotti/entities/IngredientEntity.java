@@ -10,9 +10,9 @@ import javax.persistence.Table;
 
 @Data
 @Entity
-@Table(name= "ingredient")
+@Table(name = "ingredient")
 public class IngredientEntity {
-   @Id
-   String id;
-   String name;
+    @Id
+    String id;
+    String name;
 }

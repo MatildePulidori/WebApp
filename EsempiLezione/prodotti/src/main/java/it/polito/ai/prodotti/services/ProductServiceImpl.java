@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
 
 
     @Autowired
@@ -32,7 +32,7 @@ public class ProductServiceImpl implements ProductService{
     public List<ProductDTO> getProducts() {
         return productRepository.findAll()
                 .stream()
-                .map(p-> modelMapper.map(p, ProductDTO.class))
+                .map(p -> modelMapper.map(p, ProductDTO.class))
                 .collect(Collectors.toList());
     }
 
@@ -46,20 +46,20 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public List<IngredientDTO> getIngredients(String id) {
         ProductEntity p = productRepository.getOne(id);
-        if(p==null) return null;
+        if (p == null) return null;
         return p.getIngredientEntities()
                 .stream()
-                .map(i-> modelMapper.map(i, IngredientDTO.class))
+                .map(i -> modelMapper.map(i, IngredientDTO.class))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ProductDTO> getProductsByIngredient(String ingredientId){
+    public List<ProductDTO> getProductsByIngredient(String ingredientId) {
         IngredientEntity ingredientEntity = ingredientRepository.getOne(ingredientId);
         if (ingredientEntity == null) return null;
         return productRepository.getByIngredientEntitiesContaining(ingredientEntity)
                 .stream()
-                .map(p-> modelMapper.map(p, ProductDTO.class))
+                .map(p -> modelMapper.map(p, ProductDTO.class))
                 .collect(Collectors.toList());
     }
 

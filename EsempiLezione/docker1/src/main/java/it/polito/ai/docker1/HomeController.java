@@ -12,15 +12,15 @@ import java.util.Scanner;
 public class HomeController {
 
     @GetMapping("/")
-    public String getDate(){
+    public String getDate() {
         try {
-           InputStream is = Runtime.getRuntime()
+            InputStream is = Runtime.getRuntime()
                     .exec("uname")
-                   .getInputStream();
+                    .getInputStream();
             Scanner scanner = new Scanner(is);
-            return new Date().toString() +": "+scanner.nextLine();
-        } catch(IOException ioe){
-            throw  new RuntimeException(ioe);
+            return new Date().toString() + ": " + scanner.nextLine();
+        } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
         }
     }
 }

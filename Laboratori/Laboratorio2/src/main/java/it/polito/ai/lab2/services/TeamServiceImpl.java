@@ -11,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.Reader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -125,6 +123,7 @@ public class TeamServiceImpl implements TeamServices {
         if (!c.isEnabled()) return false;
 
         c.addStudent(s);
+        s.addCourse(c);
         return true;
     }
 
@@ -180,20 +179,34 @@ public class TeamServiceImpl implements TeamServices {
                     added = this.addStudentToCourse(id, courseName);
                 }
                 enrolled.add(added);
-
-
-
             }
         }
         return enrolled;
     }
 
     @Override
-    public List<Boolean> addAndEnroll(Reader r, String courseName) throws FileNotFoundException {
-        r = new FileReader("../mydata/data.csv");
+    public List<Boolean> addAndEnroll(Reader r, String courseName) throws IOException {
+
+        if(!courseRepository.existsById(courseName)){
+            throw  new CourseNotFoundException();
+        }
+        List<Boolean> addenroll = new ArrayList<>();
+        BufferedReader bufReader = new BufferedReader( r);
+        String row = "";
+        while( (row = bufReader.readLine()) != null){
+            String[] student = row.split(",");
+
+            StudentDTO newStudent = new StudentDTO();
+            newStudent.setId(student[0]);
+            newStudent.setName(student[1]);
+            newStudent.setFirstName(student[2]);
 
 
+            this.addStudent(newStudent);
+            boolean res = this.addStudentToCourse(newStudent.getId(), courseName);
+            addenroll.add(res);
+        }
 
-        return null;
+        return addenroll;
     }
 }

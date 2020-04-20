@@ -23,7 +23,7 @@ public class Main {
                 // vedo che l'esecuzione è stata fatta da due thread diversi
                 .parallel()
                 .map(s -> {
-                     System.out.println(Thread.currentThread());
+                    System.out.println(Thread.currentThread());
                     return s;
                 })
                 // 5) Questa non è una grande idea, esamino tutti i dati che mi arrivano: c'è un effetto collaterale
@@ -56,7 +56,7 @@ public class Main {
         System.out.println();
 
         // 10) uso di generate()
-        Stream.generate(()->Math.random())
+        Stream.generate(() -> Math.random())
                 .limit(10)
                 .forEach(System.out::println);
 
@@ -64,15 +64,15 @@ public class Main {
 
         // 11) uso di concat()
         Stream<Double> s1 =
-                Stream.generate(()->Math.random()).limit(10);
+                Stream.generate(() -> Math.random()).limit(10);
         Stream<Double> s2 =
-                Stream.iterate(1.0, d->d+0.25).limit(10);
+                Stream.iterate(1.0, d -> d + 0.25).limit(10);
         // Stream.concat(s1, s2).forEach(System.out::println);
 
         System.out.println();
 
         // 12) metodo reduce()
-        System.out.println(s2.reduce("", (a,b)->a+" "+b, (a,b)->a+" "+b));
+        System.out.println(s2.reduce("", (a, b) -> a + " " + b, (a, b) -> a + " " + b));
     }
 
 

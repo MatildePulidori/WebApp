@@ -7,7 +7,7 @@ public class Message {
     private String msg;
     private LocalDateTime date;
 
-    public Message(String msg, LocalDateTime date){
+    public Message(String msg, LocalDateTime date) {
         this.msg = msg;
         this.date = date;
     }

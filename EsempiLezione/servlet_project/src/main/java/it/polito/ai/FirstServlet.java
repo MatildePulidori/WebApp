@@ -20,19 +20,19 @@ public class FirstServlet extends HttpServlet {
             pw.println("<html><head><link rel=\"stylesheet\" href=\"style.css\"></head><body><h1>Hello Servlet!</h1>");
             pw.println("<ul>");
             Enumeration<String> names = req.getHeaderNames();
-            while(names.hasMoreElements()){
+            while (names.hasMoreElements()) {
                 String name = names.nextElement();
-                pw.print("<li>" );
+                pw.print("<li>");
                 pw.print(name);
                 pw.print(":");
                 pw.print(req.getHeader(name));
                 pw.println("</li>");
             }
             pw.println("</ul>");
-            pw.println("<p> SESSION ID: "+req.getSession().getId()+"</p>");
+            pw.println("<p> SESSION ID: " + req.getSession().getId() + "</p>");
             pw.println("</body></html>");
             resp.setContentType("text/html");
-        } catch (IOException ioe){
+        } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         }
     }

@@ -18,6 +18,6 @@ public class DemoApplication {
         // "Tomcat initialized with port(s): 8080 (http)" vuol dire che
         // il  sistema si è "accorto" che avevamo bisogno di un servizio web
         // e lo ha aperto.
-        }
+    }
 
 }

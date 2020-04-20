@@ -18,24 +18,24 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping("/products")
-    public List<ProductDTO> getProducts(){
+    public List<ProductDTO> getProducts() {
         return productService.getProducts();
     }
 
     @GetMapping("/products/{id}")
-    public ProductDTO getProduct(@PathVariable("id") String id){
-        try{
+    public ProductDTO getProduct(@PathVariable("id") String id) {
+        try {
             return productService.getProduct(id);
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found");
         }
     }
 
     @GetMapping("products/{id}/ingredients")
-    public List<IngredientDTO> getIngredients(@PathVariable("id") String id){
-        try{
+    public List<IngredientDTO> getIngredients(@PathVariable("id") String id) {
+        try {
             return productService.getIngredients(id);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found");
         }
     }

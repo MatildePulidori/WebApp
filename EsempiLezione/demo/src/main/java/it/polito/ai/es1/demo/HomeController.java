@@ -21,7 +21,7 @@ public class HomeController {
     // è quella di riconoscere in automatico che la nostra classe usa un servizio web
     // e di metterlo a disposizione.
     @GetMapping("/")
-    public Message home(){
+    public Message home() {
         return new Message("Benvenuti al corso", LocalDateTime.now());
     }
 

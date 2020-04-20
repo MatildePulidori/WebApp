@@ -15,19 +15,19 @@ import java.util.stream.Stream;
 public class Boot1Application {
 
     @Bean
-    public Date last(){
+    public Date last() {
         return new Date();
     }
 
     @Bean
-    public List<String> items(Date last){
+    public List<String> items(Date last) {
         return Stream.of("alpha", "beta", "gamma", last.toString())
                 .collect(Collectors.toList());
     }
 
     public static void main(String[] args) {
 
-        SpringApplication.run(Boot1Application.class, args) ;
+        SpringApplication.run(Boot1Application.class, args);
 
         // 30 marzo 2020:
         /* ApplicationContext ctx = SpringApplication.run(Boot1Application.class, args);

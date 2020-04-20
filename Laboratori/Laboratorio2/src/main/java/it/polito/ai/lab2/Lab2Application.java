@@ -15,6 +15,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,7 +40,6 @@ public class Lab2Application {
 
 
                     System.out.println("----------------------1------------------------");
-
                     CourseDTO c = new CourseDTO();
                     c.setName("fisica1");
                     c.setMin(2);
@@ -50,8 +52,6 @@ public class Lab2Application {
                     System.out.println(courseDTOtoFind.toString());
 
                     System.out.println("-----------------------3-----------------------");
-
-
                     StudentDTO s = new StudentDTO();
                     s.setId("253344");
                     s.setFirstName("pulidori");
@@ -59,16 +59,25 @@ public class Lab2Application {
                     teamServices.addStudent(s);
 
                     System.out.println("------------------------4----------------------");
-                    System.out.println(teamServices.getStudent("123456").toString());
-                    System.out.println("------------------------5----------------------");
+                    System.out.println(teamServices.getStudent(s.getId()).toString());
 
-                    teamServices.addStudentToCourse("123456", c.getName());
+                    System.out.println("------------------------5----------------------");
+                    teamServices.addStudentToCourse(s.getId(), c.getName());
 
                     System.out.println("-------------------------6---------------------");
                     System.out.println(teamServices.getEnrolledStudents("algebra"));
-                    System.out.println("-------------------------7---------------------");
 
-                } catch (IllegalStateException ise){
+
+                    System.out.println("-------------------------7---------------------");
+                    try{
+                        Reader r = new FileReader("/Users/matildepulidori/IdeaProjects/Laboratori/Laboratorio2/mydata/data.csv");
+                        System.out.println(teamServices.addAndEnroll(r, "fisica1"));
+                    } catch (IOException ioe){
+                        throw  new IOException();
+                    }
+                    System.out.println("-------------------------8---------------------");
+
+                } catch (IllegalStateException | IOException ise){
                     throw new IllegalStateException("Command Line Runner");
                 }
 

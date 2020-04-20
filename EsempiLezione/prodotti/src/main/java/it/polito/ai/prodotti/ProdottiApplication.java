@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Bean;
 public class ProdottiApplication {
 
     @Bean
-    ModelMapper modelMapper(){
+    ModelMapper modelMapper() {
         return new ModelMapper();
     }
 
