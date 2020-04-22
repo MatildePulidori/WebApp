@@ -354,7 +354,7 @@ public class TeamServiceImpl implements TeamServices {
     }
 
     @Override
-    public List<Student> getStudentsNotInTeam(String courseName) {
+    public List<Student> getStudentsAvailable(String courseName) {
         if (!courseRepository.existsById(courseName)){
             throw  new CourseNotFoundException();
         }

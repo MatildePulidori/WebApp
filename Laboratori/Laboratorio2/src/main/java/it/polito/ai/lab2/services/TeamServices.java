@@ -46,6 +46,6 @@ public interface TeamServices {
 
     /* 18 */
     List<Student> getStudentsInTeam(String courseName);
-    List<Student> getStudentsNotInTeam(String courseName);
+    List<Student> getStudentsAvailable(String courseName);
 
 }

@@ -164,7 +164,7 @@ public class Lab2Application {
 
                     System.out.println("-------------------------14---------------------");
                     System.out.println("----- Studenti non in un team per il corso di Fisica1. ");
-                    System.out.println(teamServices.getStudentsNotInTeam(c1.getName()));
+                    System.out.println(teamServices.getStudentsAvailable(c1.getName()));
 
 
 
