@@ -26,10 +26,20 @@ public class Course {
     private int max;
     private boolean enabled;
 
+    @Override
+    public String toString() {
+        return "Course{" +
+                "name='" + name + '\'' +
+                ", min=" + min +
+                ", max=" + max +
+                ", enabled=" + enabled +
+                '}';
+    }
 
     public Student addStudent(Student student){
         if (!this.contains(student)){
             students.add(student);
+            if (!student.contains(this)) student.addCourse(this);
             return student;
         }
         return null;
@@ -52,6 +62,7 @@ public class Course {
             return null;
         }
         teams.add(team);
+        if (team.getCourse()!=this) team.setCourse(this);
         return team;
     }
 
@@ -63,7 +74,6 @@ public class Course {
             return false;
         }
         this.teams.remove(team);
-        team.removeCourse(this);
         return true;
 
     }

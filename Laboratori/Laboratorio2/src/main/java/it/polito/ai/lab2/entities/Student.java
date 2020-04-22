@@ -10,23 +10,32 @@ import java.util.List;
 @Data
 public class Student {
     @Id
-    String id;
-    String name;
-    String firstName;
+    private String id;
+    private String name;
+    private String firstName;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name="student_course",
             joinColumns = @JoinColumn(name="studenti_id"),
             inverseJoinColumns = @JoinColumn(name="course_name"))
-    List<Course> courses = new ArrayList<Course>();
+    private List<Course> courses = new ArrayList<Course>();
 
     @ManyToMany(mappedBy = "members")
-    List<Team> teams = new ArrayList<>();
+    private List<Team> teams = new ArrayList<>();
 
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", firstName='" + firstName + '\'' +
+                '}';
+    }
 
     public Course addCourse(Course course) {
         if (!this.contains(course)){
             courses.add(course);
+            if (!course.contains(this)) course.addStudent(this);
             return course;
         }
         return null;
@@ -48,6 +57,7 @@ public class Student {
         if (this.contains(team)){
             return null;
         }
+
         teams.add(team);
         return team;
     }
@@ -59,6 +69,7 @@ public class Student {
             return false;
         }
         this.teams.remove(team);
+        if (team.contains(this)) team.removeMember(this);
         return true;
     }
 

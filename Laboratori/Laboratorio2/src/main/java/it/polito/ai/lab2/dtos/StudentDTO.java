@@ -1,5 +1,6 @@
 package it.polito.ai.lab2.dtos;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data

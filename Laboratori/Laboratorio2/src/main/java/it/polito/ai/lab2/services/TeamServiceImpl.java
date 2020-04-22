@@ -5,8 +5,10 @@ import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.dtos.TeamDTO;
 import it.polito.ai.lab2.entities.Course;
 import it.polito.ai.lab2.entities.Student;
+import it.polito.ai.lab2.entities.Team;
 import it.polito.ai.lab2.repositories.CourseRepository;
 import it.polito.ai.lab2.repositories.StudentRepository;
+import it.polito.ai.lab2.repositories.TeamRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,9 @@ public class TeamServiceImpl implements TeamServices {
 
     @Autowired
     CourseRepository courseRepository;
+
+    @Autowired
+    TeamRepository teamRepository;
 
 
 
@@ -56,7 +61,7 @@ public class TeamServiceImpl implements TeamServices {
     }
 
     @Override
-    public List<CourseDTO> getCourses() {
+    public List<CourseDTO> getAllCourses() {
         return courseRepository.findAll()
                 .stream()
                 .map(c->modelMapper.map(c, CourseDTO.class))
@@ -65,6 +70,7 @@ public class TeamServiceImpl implements TeamServices {
 
     @Override
     public boolean addStudent(StudentDTO studentDTO) {
+
         if(studentRepository.existsById(studentDTO.getId())==false){
             Student s = new Student();
             s.setId(studentDTO.getId());
@@ -79,7 +85,7 @@ public class TeamServiceImpl implements TeamServices {
     @Override
     public Optional<StudentDTO> getStudent(String studentId) {
         Optional<StudentDTO> studentDTO = studentRepository.findById(studentId)
-                        .map(s->modelMapper.map(s, StudentDTO.class));
+                .map(s->modelMapper.map(s, StudentDTO.class));
         return studentDTO;
     }
 
@@ -93,16 +99,15 @@ public class TeamServiceImpl implements TeamServices {
 
     @Override
     public List<StudentDTO> getEnrolledStudents(String courseName) {
-        List<StudentDTO> enrolled = new ArrayList<>();
-        try {
-            if (courseRepository.existsById(courseName)){
-                List<Student> students = courseRepository.getOne(courseName).getStudents();
-                for (Student s : students) {
-                    enrolled.add(modelMapper.map(s, StudentDTO.class));
-                }
-            }
-        } catch (CourseNotFoundException ce) {
+
+        if (!courseRepository.existsById(courseName)){
             throw new CourseNotFoundException();
+        }
+
+        List<Student> students = courseRepository.getOne(courseName).getStudents();
+        List<StudentDTO> enrolled = new ArrayList<>();
+        for (Student s : students) {
+            enrolled.add(modelMapper.map(s, StudentDTO.class));
         }
         return enrolled;
 
@@ -113,42 +118,40 @@ public class TeamServiceImpl implements TeamServices {
 
         if (!courseRepository.existsById(courseName)){
             throw new CourseNotFoundException();
-
         }
+
         if (!studentRepository.existsById(studentId)){
             throw new StudentNotFoundException();
         }
 
         Course c = courseRepository.getOne(courseName);
-        Student s = studentRepository.getOne(studentId);
         if (!c.isEnabled()) return false;
 
+        Student s = studentRepository.getOne(studentId);
         c.addStudent(s);
-        s.addCourse(c);
         return true;
     }
 
     @Override
     public void enableCourse(String courseName) {
-        try{
-            this.getCourse(courseName)
-                    .ifPresent(c->modelMapper.map(c, Course.class).setEnabled(true));
-        } catch (CourseNotFoundException ce){
+
+        if (!courseRepository.existsById(courseName)){
             throw new CourseNotFoundException();
         }
+        courseRepository.getOne(courseName).setEnabled(true);
 
     }
 
     @Override
     public void disableCourse(String courseName) {
-        try{
-            this.getCourse(courseName)
-                    .ifPresent(c->modelMapper.map(c, Course.class).setEnabled(false));
-        } catch (CourseNotFoundException ce){
+
+        if (!courseRepository.existsById(courseName)){
             throw new CourseNotFoundException();
         }
+        courseRepository.getOne(courseName).setEnabled(false);
 
     }
+
 
     @Override
     public List<Boolean> addAll(List<StudentDTO> students) {
@@ -171,16 +174,20 @@ public class TeamServiceImpl implements TeamServices {
 
     @Override
     public List<Boolean> enrollAll(List<String> studentIds, String courseName) {
-        List<Boolean> enrolled = new ArrayList<>();
-        if (!courseRepository.existsById(courseName)) {
-            for(String id : studentIds) {
 
-                boolean added = false;
-                if (studentRepository.existsById(id)){
-                    added = this.addStudentToCourse(id, courseName);
-                }
-                enrolled.add(added);
+        if (!courseRepository.existsById(courseName)) {
+            throw new CourseNotFoundException();
+        }
+        List<Boolean> enrolled = new ArrayList<>();
+        for (String id : studentIds) {
+
+            boolean added = false;
+            if (!studentRepository.existsById(id)) {
+                throw new StudentNotFoundException();
             }
+            added = this.addStudentToCourse(id, courseName);
+
+            enrolled.add(added);
         }
         return enrolled;
     }
@@ -212,17 +219,145 @@ public class TeamServiceImpl implements TeamServices {
     }
 
     @Override
+    public List<CourseDTO> getCourses(String studentId) {
+        if (!studentRepository.existsById(studentId)){
+            throw new StudentNotFoundException();
+        }
+        List<CourseDTO> coursesOfStudent = new ArrayList<>();
+        for (Course course : studentRepository.getOne(studentId).getCourses()){
+            coursesOfStudent.add(modelMapper.map(course, CourseDTO.class));
+        }
+        return coursesOfStudent;
+    }
+
+
+    @Override
     public List<TeamDTO> getTeamsForStudent(String studentId) {
-        return null;
+        if (!studentRepository.existsById(studentId)){
+            throw new StudentNotFoundException();
+        }
+        List<TeamDTO> teams = new ArrayList<>();
+        for(Team t : teamRepository.getTeamByMembers(studentRepository.getOne(studentId))){
+            teams.add(modelMapper.map(t, TeamDTO.class));
+        }
+
+
+        /*
+        for (Team t : studentRepository.getOne(studentId).getTeams()) {
+               teams.add(modelMapper.map(t, TeamDTO.class));
+        }
+        */
+        return teams;
     }
 
     @Override
     public List<StudentDTO> getMembers(Long teamId) {
-        return null;
+        if (!teamRepository.existsById(teamId)){
+            throw new TeamNotFoundException();
+        }
+
+        List<StudentDTO> members = new ArrayList<>();
+        for (Student s : teamRepository.getOne(teamId).getMembers()){
+            members.add(modelMapper.map(s, StudentDTO.class));
+        }
+        return members;
     }
 
     @Override
     public List<TeamDTO> getTeamForCourse(String courseName) {
-        return null;
+        if (!courseRepository.existsById(courseName)){
+            throw new CourseNotFoundException();
+        }
+        List<TeamDTO> teams = new ArrayList<>();
+        for(Team t :  teamRepository.getTeamByCourse(courseRepository.getOne(courseName))){
+            teams.add(modelMapper.map(t, TeamDTO.class));
+        }
+        return teams;
+    }
+
+    @Override
+    public TeamDTO proposeTeam(String courseName, String name, List<String> memeberIds) {
+
+        // .. Se il corso non esiste
+        if (!courseRepository.existsById(courseName)){
+            throw new CourseNotFoundException();
+        }
+
+        Course currCourse = new Course();
+        currCourse = courseRepository.getOne(courseName);
+
+        // .. Se il corso non è abilitato
+        if (!currCourse.isEnabled()){
+            throw new TeamServiceException();
+        }
+
+
+        // .. Rispetto cardinalità del corso
+        if ( memeberIds.size() >= currCourse.getMin())
+        { System.out.println("course min: "+currCourse.getMin());
+        }
+        if( memeberIds.size() < currCourse.getMax() ){
+            System.out.println("course max: "+currCourse.getMax());
+        }
+
+        // .. Controllo duplicati
+
+        for (int i = 0; i<memeberIds.size(); i++){
+            for ( int j=i+1; j<memeberIds.size(); j++){
+                if (memeberIds.get(i).compareTo(memeberIds.get(j)) ==0) throw  new TeamServiceException();
+            }
+        }
+
+
+        Team newTeam = new Team();
+        newTeam.setName(name);
+        newTeam.setCourse(currCourse);
+
+
+        for (String memeberId : memeberIds){
+
+            // .. Se lo studente non esiste
+            if (!studentRepository.existsById(memeberId)){
+                throw new StudentNotFoundException();
+            }
+
+            Student currStudent = studentRepository.getOne(memeberId);
+
+            // .. Se lo studente non è iscritto al corso
+            if (!currCourse.contains(currStudent)){
+                throw new TeamServiceException();
+            }
+            if (!currStudent.contains(currCourse)){
+                throw new TeamServiceException();
+            }
+
+            // .. Se lo studente è in un altro gruppo
+            for(Team teamOfTheCourse : currCourse.getTeams()){
+                if (teamOfTheCourse.contains(currStudent)){
+                    throw new TeamServiceException();
+                }
+            }
+
+            newTeam.addMember(currStudent); // Questo metodo chiama anche per lo studente l'addTeam.
+        }
+        teamRepository.save(newTeam);
+        return modelMapper.map(newTeam, TeamDTO.class);
+
+    }
+
+    @Override
+    public List<Student> getStudentsInTeam(String courseName) {
+        if (!courseRepository.existsById(courseName)){
+            throw  new CourseNotFoundException();
+        }
+        return courseRepository.getStudentsInTeams(courseName);
+    }
+
+    @Override
+    public List<Student> getStudentsNotInTeam(String courseName) {
+        if (!courseRepository.existsById(courseName)){
+            throw  new CourseNotFoundException();
+        }
+        return courseRepository.getStudentsNotInTeams(courseName);
     }
 }
