@@ -11,7 +11,6 @@ import java.util.List;
 @Repository
 public interface TeamRepository extends JpaRepository<Team, Long> {
 
-    List<Team> getTeamByMembers(Student student);
     List<Team> getTeamByCourse(Course course);
 
 

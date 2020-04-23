@@ -9,6 +9,7 @@ import java.util.List;
 @Entity
 @Data
 public class Student {
+
     @Id
     private String id;
     private String name;
@@ -33,21 +34,9 @@ public class Student {
     }
 
     public Course addCourse(Course course) {
-        if (!this.contains(course)){
-            courses.add(course);
-            if (!course.contains(this)) course.addStudent(this);
-            return course;
-        }
-        return null;
-    }
-
-    public boolean contains(Course course){
-        for (Course c: courses) {
-            if (c.getName() == course.getName()){
-                return true;
-            }
-        }
-        return false;
+        this.courses.add(course);
+        course.addStudent(this);
+        return course;
     }
 
     public Team addTeam(Team team){
@@ -57,8 +46,7 @@ public class Student {
         if (this.contains(team)){
             return null;
         }
-
-        teams.add(team);
+        this.teams.add(team);
         return team;
     }
 
@@ -69,7 +57,6 @@ public class Student {
             return false;
         }
         this.teams.remove(team);
-        if (team.contains(this)) team.removeMember(this);
         return true;
     }
 

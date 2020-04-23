@@ -41,12 +41,13 @@ public class Team {
 
         // Se si vuole mettere course = null
         if (course == null) {
-            if (this.course!=null) this.course.removeTeam(this);
+            this.course.removeTeam(this);
             this.course = null;
+            return;
         }
 
-        // Se si vuole settare un corso: che non sia uguale al precedente
-        else if (course!=null && this.course!=course) {
+        // Se si vuole settare un corso
+        if (course!=null) {
 
             // Se c'era un vecchio corso:
             // levo il team dalla lista dei team del vecchio corso?
@@ -55,7 +56,7 @@ public class Team {
 
             // Altrimenti, lo setto direttamente.
             this.course = course;
-            if (!this.course.contains(this)) this.course.addTeam(this);
+            this.course.addTeam(this);
         }
     }
 
@@ -66,8 +67,8 @@ public class Team {
             return null;
         if (this.contains(student))
             return null;
-        members.add(student);
-        if (!student.contains(this)) student.addTeam(this);
+        this.members.add(student);
+        student.addTeam(this);
         return student;
 
     }
@@ -79,7 +80,7 @@ public class Team {
             return false;
         }
         this.members.remove(student);
-        if (student.contains(this)) student.removeTeam(this);
+        student.removeTeam(this);
         return true;
     }
 

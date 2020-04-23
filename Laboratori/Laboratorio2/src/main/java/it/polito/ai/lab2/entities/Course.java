@@ -2,10 +2,7 @@ package it.polito.ai.lab2.entities;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +16,7 @@ public class Course {
     @ManyToMany(mappedBy = "courses")
     private List<Student> students = new ArrayList<>();
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Team> teams = new ArrayList<>();
 
     private int min;
@@ -37,12 +34,8 @@ public class Course {
     }
 
     public Student addStudent(Student student){
-        if (!this.contains(student)){
-            students.add(student);
-            if (!student.contains(this)) student.addCourse(this);
-            return student;
-        }
-        return null;
+        this.students.add(student);
+        return student;
     }
 
     public boolean contains(Student student){
@@ -61,8 +54,7 @@ public class Course {
         if (this.contains(team)){
             return null;
         }
-        teams.add(team);
-        if (team.getCourse()!=this) team.setCourse(this);
+        this.teams.add(team);
         return team;
     }
 
