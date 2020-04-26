@@ -1,0 +1,12 @@
+Spring Security.
+
+Using generated security password: b6ae3845-f3ad-4ce7-9c7d-78a6965cf9e0
+(base) MBP-di-Matilde:security1 matildepulidori$ curl http://localhost:8080/
+{"timestamp":"2020-04-26T15:43:18.106+0000","status":401,"error":"Unauthorized"}
+
+In http://localhost:8080/: user + b6ae3845-f3ad-4ce7-9c7d-78a6965cf9e0.
+Viene generato un cookie per gestire il login.
+
+In application properties: spring.security.user.name=user, spring.security.user.password=password, posso setter username e password.
+
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter: a questa classe si delega tutte le funzionalità di gestione degli accessi, autenticazione etc.

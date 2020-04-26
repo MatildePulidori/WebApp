@@ -1,10 +1,10 @@
-package it.polito.ai.security;
+package it.polito.ai.security1;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SecurityApplicationTests {
+class Security1ApplicationTests {
 
     @Test
     void contextLoads() {

@@ -1,7 +1,6 @@
-package it.polito.ai.security;
+package it.polito.ai.security1;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -9,46 +8,43 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-
     @Bean
-    PasswordEncoder encoder(){
-        return  new BCryptPasswordEncoder();
+    public PasswordEncoder encoder(){
+        return new BCryptPasswordEncoder();
     }
+
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+
         auth
-                .inMemoryAuthentication()
+            .inMemoryAuthentication()
                 .withUser("Tizio")
-                .password(encoder().encode("Alpha"))
+                .password(encoder().encode("Alfa"))
                 .roles("user")
-
-
-                .and()
+            .and()
                 .withUser("Caio")
                 .password(encoder().encode("Beta"))
                 .roles("user")
-
-                .and()
+            .and()
                 .withUser("Sempronio")
                 .password(encoder().encode("Gamma"))
                 .roles("admin");
+
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception{
+    protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/**")
                 .hasRole("user")
-                .and()
+            .and()
                 .formLogin();
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception{
+    public void configure(WebSecurity web) throws Exception {
         super.configure(web);
     }
-
 }

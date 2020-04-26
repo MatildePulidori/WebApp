@@ -1,13 +1,13 @@
-package it.polito.ai.security;
+package it.polito.ai.security1;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SecurityApplication {
+public class Security1Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(SecurityApplication.class, args);
+        SpringApplication.run(Security1Application.class, args);
     }
 
 }
