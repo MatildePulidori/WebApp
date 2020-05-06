@@ -19,7 +19,4 @@ public interface CourseRepository extends JpaRepository<Course, String> {
     List<Student> getStudentsNotInTeams(String courseName);
 
 
-
-
-
 }

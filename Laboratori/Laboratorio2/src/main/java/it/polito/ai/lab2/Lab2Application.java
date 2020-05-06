@@ -22,12 +22,12 @@ import java.util.Optional;
 public class Lab2Application {
 
     @Bean
-    ModelMapper modelMapper(){
+    ModelMapper modelMapper() {
         return new ModelMapper();
     }
 
     @Bean
-    CommandLineRunner runner(TeamServices teamServices){
+    CommandLineRunner runner(TeamServices teamServices) {
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws RuntimeException {
@@ -100,15 +100,15 @@ public class Lab2Application {
                     List<StudentDTO> toAdd = new ArrayList<>();
                     System.out.println("----- Studente: Riccarco Rusca. ");
                     StudentDTO s3 = new StudentDTO();
-                            s3.setId("256347");
-                            s3.setFirstName("Rusca");
-                            s3.setName("Riccardo");
+                    s3.setId("256347");
+                    s3.setFirstName("Rusca");
+                    s3.setName("Riccardo");
                     toAdd.add(s3);
                     System.out.println("----- Studente: Vito Valente. ");
                     StudentDTO s4 = new StudentDTO();
-                            s4.setId("456789");
-                            s4.setFirstName("Valente");
-                            s4.setName("Vito");
+                    s4.setId("456789");
+                    s4.setFirstName("Valente");
+                    s4.setName("Vito");
                     toAdd.add(s4);
                     teamServices.addAll(toAdd);
                     System.out.println("----- Studente: Riccarco Rusca iscritto ad Analisi1. ");
@@ -126,13 +126,13 @@ public class Lab2Application {
 
                     System.out.println("-------------------------10---------------------");
                     System.out.println("----- Prova ad aprire un file csv. ");
-                    try{
+                    try {
                         Reader r = new FileReader("/Users/matildepulidori/IdeaProjects/Laboratori/Laboratorio2/mydata/data.csv");
                         System.out.println("----- Prova ad aggiungere gli studenti del file al corso di Fisica1. ");
                         teamServices.addAndEnroll(r, c1.getName());
                         System.out.println(teamServices.getEnrolledStudents(c1.getName()));
-                    } catch (IOException ioe){
-                        throw  new IOException();
+                    } catch (IOException ioe) {
+                        throw new IOException();
                     }
 
 
@@ -143,7 +143,7 @@ public class Lab2Application {
                     System.out.println("-------------------------12---------------------");
                     System.out.println("----- Teams. ");
                     System.out.println("----- Team1: Riccardo Rusca e Vito Valente, corso di Fisica1. ");
-                    TeamDTO teamDTO1 = teamServices.proposeTeam(c1.getName(),"uno", ids );
+                    TeamDTO teamDTO1 = teamServices.proposeTeam(c1.getName(), "uno", ids);
                     System.out.println(teamDTO1.toString());
                     List<StudentDTO> studentsOfc1 = new ArrayList<>(teamServices.getEnrolledStudents(c1.getName()));
 
@@ -152,7 +152,7 @@ public class Lab2Application {
                     newGroup.add(studentsOfc1.get(3).getId());
                     newGroup.add(studentsOfc1.get(4).getId());
                     //newGroup.add(studentsOfc1.get(5).getId());
-                    TeamDTO teamDTO2 = teamServices.proposeTeam(c1.getName(),"due", newGroup );
+                    TeamDTO teamDTO2 = teamServices.proposeTeam(c1.getName(), "due", newGroup);
                     System.out.println(teamDTO2.toString());
 
                     System.out.println("----- Teams per il corso di Fisica1. ");
@@ -167,8 +167,7 @@ public class Lab2Application {
                     System.out.println(teamServices.getAvailableStudents(c1.getName()));
 
 
-
-                } catch (IllegalStateException | IOException ise){
+                } catch (IllegalStateException | IOException ise) {
                     throw new IllegalStateException("Command Line Runner");
                 }
 

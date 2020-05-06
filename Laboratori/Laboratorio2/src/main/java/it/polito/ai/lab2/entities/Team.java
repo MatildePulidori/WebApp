@@ -18,13 +18,13 @@ public class Team {
     private int status;
 
     @ManyToOne
-    @JoinColumn(name="course_id")
+    @JoinColumn(name = "course_id")
     private Course course;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
-    @JoinTable( name="team_members",
-            joinColumns = @JoinColumn(name="team_id"),
-            inverseJoinColumns = @JoinColumn(name="student_id"))
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "team_members",
+            joinColumns = @JoinColumn(name = "team_id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id"))
     private List<Student> members = new ArrayList<>();
 
 
@@ -37,7 +37,7 @@ public class Team {
                 '}';
     }
 
-    public void setCourse(Course course){
+    public void setCourse(Course course) {
 
         // Se si vuole mettere course = null
         if (course == null) {
@@ -47,12 +47,12 @@ public class Team {
         }
 
         // Se si vuole settare un corso
-        if (course!=null) {
+        if (course != null) {
 
             // Se c'era un vecchio corso:
             // levo il team dalla lista dei team del vecchio corso?
             // o non permetto il settaggio?
-            if( this.course!=null) this.course.removeTeam(this);
+            if (this.course != null) this.course.removeTeam(this);
 
             // Altrimenti, lo setto direttamente.
             this.course = course;
@@ -61,9 +61,8 @@ public class Team {
     }
 
 
-
-    public Student addMember(Student student){
-        if (student==null)
+    public Student addMember(Student student) {
+        if (student == null)
             return null;
         if (this.contains(student))
             return null;
@@ -73,10 +72,10 @@ public class Team {
 
     }
 
-    public boolean removeMember(Student student){
-        if (student==null)
+    public boolean removeMember(Student student) {
+        if (student == null)
             return false;
-        if (!this.contains(student)){
+        if (!this.contains(student)) {
             return false;
         }
         this.members.remove(student);
@@ -85,8 +84,8 @@ public class Team {
     }
 
     public boolean contains(Student student) {
-        for(Student s: members){
-            if (s.getId() == student.getFirstName()){
+        for (Student s : members) {
+            if (s.getId() == student.getFirstName()) {
                 return true;
             }
         }

@@ -14,7 +14,7 @@ public class LoginCommand {
     String email;
 
     @NotEmpty
-    @Size(min=4, max=50)
+    @Size(min = 4, max = 50)
     String password;
 
 

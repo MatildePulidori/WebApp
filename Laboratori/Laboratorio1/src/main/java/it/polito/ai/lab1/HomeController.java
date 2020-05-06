@@ -30,10 +30,9 @@ public class HomeController {
     }
 
 
-
     @GetMapping("/register")
     public String registrationPage(@ModelAttribute("command") RegistrationCommand command,
-            Model m) {
+                                   Model m) {
         log.info(command.toString());
         return "registration";
     }
@@ -74,12 +73,11 @@ public class HomeController {
             return "registration";
         }
         log.info("Registrazione di " + manager.get(command.email).getEmail() + " andata a buon fine.");
-        redirectAttributes.addFlashAttribute( "registrazione", "Registrazione di " + manager.get(command.email).getEmail() + " andata a buon fine (" + manager.get(command.email).getRegistrationDate() + ")");
+        redirectAttributes.addFlashAttribute("registrazione", "Registrazione di " + manager.get(command.email).getEmail() + " andata a buon fine (" + manager.get(command.email).getRegistrationDate() + ")");
         log.info("redirect:home");
         return "redirect:home";
 
     }
-
 
 
     @GetMapping("/login")
@@ -101,11 +99,11 @@ public class HomeController {
         log.info(loginCommand.toString());
         m.addAttribute("utenteSbagliato", "");
         m.addAttribute("passwordSbagliata", "");
-        if (loginCommand == null || loginCommand.getEmail()=="" || loginCommand.getPassword()=="") {
+        if (loginCommand == null || loginCommand.getEmail() == "" || loginCommand.getPassword() == "") {
             log.info("Riempire campi vuoti.");
-            if (loginCommand.getEmail().equals("")){
+            if (loginCommand.getEmail().equals("")) {
                 m.addAttribute("utenteSbagliato", "Riempire i campi vuoti.");
-            }else if (loginCommand.getPassword().equals("")) {
+            } else if (loginCommand.getPassword().equals("")) {
                 m.addAttribute("passwordSbagliata", "Riempire campo password.");
             }
 
@@ -116,7 +114,7 @@ public class HomeController {
                 log.info("Utente inesistente.");
                 m.addAttribute("utenteSbagliato", "Campo utente errato.");
                 return "login";
-            } else{
+            } else {
                 boolean pwdCorrect = loginCommand.getPassword().equals(details.getPassword());
                 if (pwdCorrect == false) {
                     log.info("Password sbagliata");
@@ -135,7 +133,7 @@ public class HomeController {
 
     @GetMapping("/private")
     public String privatePage(HttpSession session, Model m) {
-        if (session.getAttribute("username") == null){
+        if (session.getAttribute("username") == null) {
             return "redirect:home";
         }
         log.info("Login avvenuto con successo: accesso a sezione privata.");
@@ -143,8 +141,8 @@ public class HomeController {
     }
 
     @PostMapping("/logout")
-    public String logout(HttpSession session, Model m){
-        if (session.getAttribute("username")!=null) {
+    public String logout(HttpSession session, Model m) {
+        if (session.getAttribute("username") != null) {
             session.removeAttribute("username");
         }
         log.info("Logout avvenuto con successo: ritorno a sezione pubblica.");

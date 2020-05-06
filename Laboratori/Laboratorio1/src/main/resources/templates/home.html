@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Home page</title>
@@ -14,22 +14,22 @@
     <span th:text="${registrazione}"></span>
 </div>
 <div>
-<h2>Login:</h2>
-<form method="post" action="/login">
+    <h2>Login:</h2>
+    <form method="post" action="/login">
 
 
-    Email
-    <br>
-    <input type="email" name="email">
-    <br>
+        Email
+        <br>
+        <input type="email" name="email">
+        <br>
 
-    Password
-    <br>
-    <input type="password" name="password">
-    <br>
+        Password
+        <br>
+        <input type="password" name="password">
+        <br>
 
-    <input type="submit" value="LOGIN">
-</form>
+        <input type="submit" value="LOGIN">
+    </form>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="../js/bootstrap.js" th:href="@{/js/bootstrap.js}"></script>

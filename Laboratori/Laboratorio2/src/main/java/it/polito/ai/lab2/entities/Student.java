@@ -16,9 +16,9 @@ public class Student {
     private String firstName;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name="student_course",
-            joinColumns = @JoinColumn(name="studenti_id"),
-            inverseJoinColumns = @JoinColumn(name="course_name"))
+    @JoinTable(name = "student_course",
+            joinColumns = @JoinColumn(name = "studenti_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_name"))
     private List<Course> courses = new ArrayList<Course>();
 
     @ManyToMany(mappedBy = "members")
@@ -39,36 +39,35 @@ public class Student {
         return course;
     }
 
-    public Team addTeam(Team team){
-        if (team == null){
+    public Team addTeam(Team team) {
+        if (team == null) {
             return null;
         }
-        if (this.contains(team)){
+        if (this.contains(team)) {
             return null;
         }
         this.teams.add(team);
         return team;
     }
 
-    public boolean removeTeam(Team team){
-        if (team==null)
+    public boolean removeTeam(Team team) {
+        if (team == null)
             return false;
-        if (!this.contains(team)){
+        if (!this.contains(team)) {
             return false;
         }
         this.teams.remove(team);
         return true;
     }
 
-    public boolean contains(Team team){
-        for (Team t: teams) {
-            if (t.getId() == team.getId()){
+    public boolean contains(Team team) {
+        for (Team t : teams) {
+            if (t.getId() == team.getId()) {
                 return true;
             }
         }
         return false;
     }
-
 
 
 }

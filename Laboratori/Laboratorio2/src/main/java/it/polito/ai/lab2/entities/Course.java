@@ -33,45 +33,46 @@ public class Course {
                 '}';
     }
 
-    public Student addStudent(Student student){
+    public Student addStudent(Student student) {
         this.students.add(student);
         return student;
     }
 
-    public boolean contains(Student student){
-        for (Student s: students) {
-            if (s.getId()== student.getId()){
+    public boolean contains(Student student) {
+        for (Student s : students) {
+            if (s.getId() == student.getId()) {
                 return true;
             }
         }
         return false;
     }
 
-    public Team addTeam(Team team){
-        if (team == null){
+    public Team addTeam(Team team) {
+        if (team == null) {
             return null;
         }
-        if (this.contains(team)){
+        if (this.contains(team)) {
             return null;
         }
         this.teams.add(team);
         return team;
     }
 
-    public boolean removeTeam(Team team){
-        if (team == null){
+    public boolean removeTeam(Team team) {
+        if (team == null) {
             return false;
         }
-        if (!this.contains(team)){
+        if (!this.contains(team)) {
             return false;
         }
         this.teams.remove(team);
         return true;
 
     }
-    public boolean contains(Team team){
-        for (Team t: teams) {
-            if (t.getId() == team.getId()){
+
+    public boolean contains(Team team) {
+        for (Team t : teams) {
+            if (t.getId() == team.getId()) {
                 return true;
             }
         }

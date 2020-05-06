@@ -12,28 +12,28 @@ import javax.validation.constraints.Size;
 @Data
 public class RegistrationCommand {
 
-     @NotEmpty(message = "{nomeVuoto}")
-     String nome;
+    @NotEmpty(message = "{nomeVuoto}")
+    String nome;
 
-     @NotEmpty(message = "{cognomeVuoto}")
-     String cognome;
+    @NotEmpty(message = "{cognomeVuoto}")
+    String cognome;
 
-     @Email(message = "{emailMessage}")
-     String email;
-
-
-     @Size(min=9, max=50, message = "{passwordMessage}")
-     String password;
-
-     String passwordValidation;
+    @Email(message = "{emailMessage}")
+    String email;
 
 
-     boolean privacyCheck;
+    @Size(min = 9, max = 50, message = "{passwordMessage}")
+    String password;
 
-     public boolean validatePassword(){
-          if (password.equals(passwordValidation)) return true;
-          else return false;
-     }
+    String passwordValidation;
+
+
+    boolean privacyCheck;
+
+    public boolean validatePassword() {
+        if (password.equals(passwordValidation)) return true;
+        else return false;
+    }
 
 
 }
