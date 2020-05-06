@@ -25,24 +25,24 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         log.debug("Initializing users details...");
-
+        /*
         log.debug("Printing all users...");
         this.users.findAll().forEach(v -> log.debug(" Users :" + v.toString()));
-/*
+
         this.users.save(User.builder()
                 .username("studente")
                 .password(this.passwordEncoder.encode("studente"))
-                .roles(Arrays.asList( "STUDENT"))
+                .roles(Arrays.asList( "ROLE_STUDENT"))
                 .build()
         );
 
         this.users.save(User.builder()
                 .username("docente")
                 .password(this.passwordEncoder.encode("docente"))
-                .roles(Arrays.asList("TEACHER"))
+                .roles(Arrays.asList("ROLE_TEACHER"))
                 .build()
-        );
-*/
+        );*/
+
         log.debug("Printing all users...");
         this.users.findAll().forEach(v -> log.debug(" User :" + v.toString()));
 

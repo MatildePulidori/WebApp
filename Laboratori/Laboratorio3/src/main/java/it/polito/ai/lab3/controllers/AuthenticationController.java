@@ -22,7 +22,7 @@ import java.util.Map;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
-@Log(topic="[SecurityConfig]")
+@Log(topic="[AuthController]")
 @RequestMapping("/auth")
 public class AuthenticationController {
 
@@ -35,6 +35,8 @@ public class AuthenticationController {
     @Autowired
     UserRepository users;
 
+
+
     @PostMapping("/signin")
     public ResponseEntity signin(@RequestBody AuthenticationRequest data) {
 
@@ -42,7 +44,8 @@ public class AuthenticationController {
             String username = data.getUsername();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
             //log.info(authenticationManager.getClass().getName());
-            String token = jwtTokenProvider.createToken(username, this.users.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username " + username + "non trovato")).getRoles());
+            String token = jwtTokenProvider.createToken(username, this.users.findByUsername(username)
+                    .orElseThrow(() -> new UsernameNotFoundException("Username " + username + "non trovato")).getRoles());
 
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);

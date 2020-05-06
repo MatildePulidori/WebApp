@@ -20,7 +20,7 @@ public class StudentController {
     @Autowired
     private TeamServices teamServices;
 
-    @GetMapping()
+    @GetMapping({"", "/"})
     List<StudentDTO> all(){
         List<StudentDTO> result = new ArrayList<>();
         teamServices.getAllStudents().stream().forEach(
@@ -36,6 +36,7 @@ public class StudentController {
         }
         return ModelHelper.enrich(optionalStudentDTO.get());
     }
+
 
     @PostMapping({"", "/"})
     StudentDTO addStudent(@RequestBody StudentDTO studentDTO){
