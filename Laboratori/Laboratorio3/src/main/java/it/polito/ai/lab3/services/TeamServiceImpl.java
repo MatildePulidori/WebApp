@@ -11,10 +11,7 @@ import it.polito.ai.lab3.entities.Team;
 import it.polito.ai.lab3.repositories.CourseRepository;
 import it.polito.ai.lab3.repositories.StudentRepository;
 import it.polito.ai.lab3.repositories.TeamRepository;
-import it.polito.ai.lab3.services.exceptions.CourseNotFoundException;
-import it.polito.ai.lab3.services.exceptions.StudentNotFoundException;
-import it.polito.ai.lab3.services.exceptions.TeamException;
-import it.polito.ai.lab3.services.exceptions.TeamNotFoundException;
+import it.polito.ai.lab3.services.exceptions.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -124,7 +121,8 @@ public boolean addStudentToCourse(String studentId, String courseName) {
         }
 
         Course c = courseRepository.getOne(courseName);
-        if (!c.isEnabled()) return false;
+        if (!c.isEnabled()) throw new CourseNotEnabledException("Corso non abilitato.");
+
 
         Student s = studentRepository.getOne(studentId);
 
@@ -172,6 +170,10 @@ public boolean addStudentToCourse(String studentId, String courseName) {
         if (!courseRepository.existsById(courseName)) {
             throw new CourseNotFoundException("Corso non trovato.");
         }
+        if (!courseRepository.findById(courseName).isPresent()) {
+            throw new CourseNotEnabledException("Corso non abilitato.");
+        }
+
         List<Boolean> enrolled = new ArrayList<>();
         studentIds.stream().forEach(id -> enrolled.add(this.addStudentToCourse(id, courseName)));
 
@@ -184,7 +186,9 @@ public boolean addStudentToCourse(String studentId, String courseName) {
         if (!courseRepository.existsById(courseName)) {
             throw new CourseNotFoundException("Corso non trovato.");
         }
-
+        if (!courseRepository.findById(courseName).isPresent()) {
+            throw new CourseNotEnabledException("Corso non abilitato.");
+        }
 
         BufferedReader bufReader = new BufferedReader(reader);
 
@@ -206,6 +210,14 @@ public boolean addStudentToCourse(String studentId, String courseName) {
         List<Boolean> enrolled = new ArrayList<Boolean>(this.enrollAll(ids, courseName));
 
         return enrolled;
+    }
+
+    @Override
+    public CourseDTO getCourse(Long teamId) {
+        if(!teamRepository.existsById(teamId)){
+            throw new TeamNotFoundException("Team inesistente");
+        }
+        return this.modelMapper.map(teamRepository.findById(teamId).get().getCourse(), CourseDTO.class);
     }
 
     @Override
@@ -277,7 +289,7 @@ public boolean addStudentToCourse(String studentId, String courseName) {
 
         // .. Se il corso non è abilitato
         if (!currCourse.isEnabled()) {
-            throw new TeamException("Corso non abilitato.");
+            throw new CourseNotEnabledException("Corso non abilitato.");
         }
 
 
@@ -342,6 +354,8 @@ public boolean addStudentToCourse(String studentId, String courseName) {
         if(!teamRepository.existsById(teamId)){
             throw new TeamNotFoundException("Team inesistente");
         }
+
+
         Team team = teamRepository.getOne(teamId);
         teamRepository.delete(team);
         team.getCourse().removeTeam(team);
@@ -369,5 +383,13 @@ public boolean addStudentToCourse(String studentId, String courseName) {
                 .stream()
                 .map(s -> this.modelMapper.map(s, StudentDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public TeamDTO getTeam(Long teamId) {
+        if(!teamRepository.existsById(teamId)){
+            throw new TeamNotFoundException("Team non trovato.");
+        }
+        return this.modelMapper.map(teamRepository.findById(teamId), TeamDTO.class);
     }
 }
