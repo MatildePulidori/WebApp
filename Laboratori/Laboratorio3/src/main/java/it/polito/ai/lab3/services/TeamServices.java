@@ -20,13 +20,13 @@ public interface TeamServices {
     @PreAuthorize("hasRole('ROLE_TEACHER')")
     boolean addCourse(CourseDTO courseDTO);
 
-    @PreAuthorize("hasRole('ROLE_TEACHER')"+ "&& hasRole('ROLE_STUDENT')")
+    @PreAuthorize("hasRole('ROLE_TEACHER')"+ "|| hasRole('ROLE_STUDENT')")
     Optional<CourseDTO> getCourse(String name);
 
-    @PreAuthorize("hasRole('ROLE_TEACHER')"+ "&& hasRole('ROLE_STUDENT')")
+    @PreAuthorize("hasRole('ROLE_TEACHER')"+ "|| hasRole('ROLE_STUDENT')")
     List<CourseDTO> getAllCourses();
 
-    //@PreAuthorize("hasRole('ROLE_TEACHER')")
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
     boolean addStudent(StudentDTO studentDTO);
 
     @PreAuthorize("hasRole('ROLE_TEACHER')")
@@ -41,15 +41,16 @@ public interface TeamServices {
     @PreAuthorize("hasRole('ROLE_TEACHER')")
     void disableCourse(String courseName);
 
-    //@PreAuthorize("hasRole('ROLE_TEACHER')")
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
     List<Boolean> addAll(List<StudentDTO> students);
 
-    //@PreAuthorize("hasRole('ROLE_TEACHER')")
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
     List<Boolean> enrollAll(List<String> studentIds, String courseName);
 
     @PreAuthorize("hasRole('ROLE_TEACHER')")
     List<Boolean> addAndEnroll(Reader r, String courseName) throws IOException;
 
+    @PreAuthorize("hasRole('ROLE_TEACHER')"+ "|| hasRole('ROLE_STUDENT')")
     CourseDTO getCourse(Long teamId);
 
     /* ----------------------------------------- STUDENT ----------------------------------------- */
@@ -86,5 +87,6 @@ public interface TeamServices {
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     List<StudentDTO> getAvailableStudents(String courseName);
 
+    @PreAuthorize("hasRole('ROLE_STUDENT')")
     TeamDTO getTeam(Long teamId);
 }

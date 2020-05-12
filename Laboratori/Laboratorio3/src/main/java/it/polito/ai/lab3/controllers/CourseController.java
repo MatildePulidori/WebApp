@@ -7,6 +7,7 @@ import it.polito.ai.lab3.services.exceptions.CourseNotFoundException;
 import it.polito.ai.lab3.services.NotificationService;
 import it.polito.ai.lab3.services.exceptions.StudentNotFoundException;
 import it.polito.ai.lab3.services.TeamServices;
+import it.polito.ai.lab3.services.exceptions.TeamServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -158,7 +159,7 @@ public class CourseController {
 
     @PostMapping("/{name}/proposeTeam/")
     @ResponseStatus(HttpStatus.CREATED)
-    TeamDTO proposeTeam(@PathVariable String name, @PathVariable String teamId, @RequestBody List<Map<String, String>> input) {
+    TeamDTO proposeTeam(@PathVariable String name, @RequestBody List<Map<String, String>> input) {
         Optional<CourseDTO> optionalCourseDTO = teamServices.getCourse(name);
         if (!optionalCourseDTO.isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, name);
@@ -170,10 +171,16 @@ public class CourseController {
                 .filter( map -> map.containsKey("id"))
                 .forEach( m  -> studs.add( m.get("id")) );
 
-        TeamDTO teamDTO= teamServices.proposeTeam(name, input.get(0).get("team"), studs);
-        notificationService.notifyTeam(teamDTO,studs);
+        try {
+            TeamDTO teamDTO= teamServices.proposeTeam(name, input.get(0).get("teamId"), studs);
+            notificationService.notifyTeam(teamDTO,studs);
+            return teamDTO;
+        } catch (StudentNotFoundException snfe){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, snfe.getLocalizedMessage());
 
-        return teamDTO;
+        } catch (TeamServiceException tse){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, tse.getLocalizedMessage());
+        }
     }
 
     @PutMapping("/{name}/enable")

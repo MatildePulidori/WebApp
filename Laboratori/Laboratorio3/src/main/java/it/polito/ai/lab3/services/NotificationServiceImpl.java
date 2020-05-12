@@ -86,7 +86,7 @@ public class NotificationServiceImpl implements NotificationService {
             Token t = new Token();
             t.setTeamId(dto.getId());
             t.setId(randomToken);
-            t.setExpirateDate(Timestamp.valueOf(LocalDateTime.now().plusHours(1)));
+            t.setExpirateDate(Timestamp.valueOf(LocalDateTime.now().plusHours(3)));
             tokenRepository.save(t);
 
 

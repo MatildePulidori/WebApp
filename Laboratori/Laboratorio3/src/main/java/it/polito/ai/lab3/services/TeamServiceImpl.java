@@ -8,18 +8,25 @@ import it.polito.ai.lab3.dtos.TeamDTO;
 import it.polito.ai.lab3.entities.Course;
 import it.polito.ai.lab3.entities.Student;
 import it.polito.ai.lab3.entities.Team;
+import it.polito.ai.lab3.entities.Token;
 import it.polito.ai.lab3.repositories.CourseRepository;
 import it.polito.ai.lab3.repositories.StudentRepository;
 import it.polito.ai.lab3.repositories.TeamRepository;
+import it.polito.ai.lab3.repositories.TokenRepository;
 import it.polito.ai.lab3.services.exceptions.*;
+import org.apache.tomcat.jni.Local;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +34,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@EnableScheduling
 public class TeamServiceImpl implements TeamServices {
 
     @Autowired
@@ -40,6 +48,9 @@ public class TeamServiceImpl implements TeamServices {
 
     @Autowired
     TeamRepository teamRepository;
+
+    @Autowired
+    TokenRepository tokenRepository;
 
 
     @Override
@@ -391,5 +402,29 @@ public boolean addStudentToCourse(String studentId, String courseName) {
             throw new TeamNotFoundException("Team non trovato.");
         }
         return this.modelMapper.map(teamRepository.findById(teamId), TeamDTO.class);
+    }
+
+
+    @Scheduled(fixedDelay = 1000*60)
+    public void run(){
+
+        List<Token> expiredTokens = tokenRepository.findAllByExpirateDateBefore( Timestamp.valueOf(LocalDateTime.now().plusHours(2)));
+        List<Long> teamToDelete = expiredTokens.stream()
+                .map(token-> token.getTeamId())
+                .distinct()
+                .collect(Collectors.toList());
+
+        expiredTokens.stream()
+                .forEach( token -> {
+                        tokenRepository.delete(token);
+                        System.out.println("Eliminato il team "+token.getTeamId()+"."); });
+
+        teamToDelete.stream().forEach( team -> {
+                try {
+                    this.evictTeam(team);
+                } catch (TeamNotFoundException tnfe){
+                    System.out.println("Team "+team+" già eliminato.");
+                }
+        });
     }
 }
