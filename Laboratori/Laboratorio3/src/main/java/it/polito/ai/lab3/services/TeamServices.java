@@ -66,10 +66,10 @@ public interface TeamServices {
     @PreAuthorize("hasRole('ROLE_STUDENT')"+ "&& authentication.principal.username==#studentId")
     List<TeamDTO> getTeamsForStudent(String studentId);
 
-    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    @PreAuthorize("hasRole('ROLE_TEACHER')"+ "|| hasRole('ROLE_STUDENT')")
     List<StudentDTO> getMembers(Long teamId);
 
-    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    @PreAuthorize("hasRole('ROLE_TEACHER')"+ "|| hasRole('ROLE_STUDENT')")
     List<TeamDTO> getTeamForCourse(String courseName);
 
     @PreAuthorize("hasRole('ROLE_STUDENT')")
@@ -81,10 +81,10 @@ public interface TeamServices {
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     void evictTeam(Long teamId);
 
-    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    @PreAuthorize("hasRole('ROLE_TEACHER')"+ "|| hasRole('ROLE_STUDENT')")
     List<StudentDTO> getStudentsInTeam(String courseName);
 
-    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    @PreAuthorize("hasRole('ROLE_TEACHER')"+ "|| hasRole('ROLE_STUDENT')")
     List<StudentDTO> getAvailableStudents(String courseName);
 
     @PreAuthorize("hasRole('ROLE_STUDENT')")

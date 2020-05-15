@@ -19,9 +19,15 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Team> teams = new ArrayList<>();
 
+    @ManyToOne()
+    @JoinColumn(name = "teacher_id")
+    private Teacher teacher;
+
     private int min;
     private int max;
     private boolean enabled;
+
+
 
     @Override
     public String toString() {

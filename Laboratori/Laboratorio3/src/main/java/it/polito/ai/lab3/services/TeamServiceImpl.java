@@ -14,6 +14,7 @@ import it.polito.ai.lab3.repositories.StudentRepository;
 import it.polito.ai.lab3.repositories.TeamRepository;
 import it.polito.ai.lab3.repositories.TokenRepository;
 import it.polito.ai.lab3.services.exceptions.*;
+import lombok.extern.java.Log;
 import org.apache.tomcat.jni.Local;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Log(topic ="Team Service")
 @Transactional
 @EnableScheduling
 public class TeamServiceImpl implements TeamServices {
@@ -417,13 +419,13 @@ public boolean addStudentToCourse(String studentId, String courseName) {
         expiredTokens.stream()
                 .forEach( token -> {
                         tokenRepository.delete(token);
-                        System.out.println("Eliminato il team "+token.getTeamId()+"."); });
+                        log.info("Eliminato il team "+token.getTeamId()+"."); });
 
         teamToDelete.stream().forEach( team -> {
                 try {
                     this.evictTeam(team);
                 } catch (TeamNotFoundException tnfe){
-                    System.out.println("Team "+team+" già eliminato.");
+                    log.info("Team "+team+" già eliminato.");
                 }
         });
     }

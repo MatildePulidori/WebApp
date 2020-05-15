@@ -27,10 +27,7 @@ import static java.util.stream.Collectors.toList;
 public class User implements UserDetails {
 
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    private Long id;
-
     @NotEmpty
     private String username;
 

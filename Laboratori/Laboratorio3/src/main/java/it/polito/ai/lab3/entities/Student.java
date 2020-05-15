@@ -17,7 +17,7 @@ public class Student {
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "student_course",
-            joinColumns = @JoinColumn(name = "studenti_id"),
+            joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "course_name"))
     private List<Course> courses = new ArrayList<Course>();
 

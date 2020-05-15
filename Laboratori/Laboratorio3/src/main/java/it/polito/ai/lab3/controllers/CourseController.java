@@ -157,7 +157,7 @@ public class CourseController {
     }
 
 
-    @PostMapping("/{name}/proposeTeam/")
+    @PostMapping("/{name}/proposeTeam")
     @ResponseStatus(HttpStatus.CREATED)
     TeamDTO proposeTeam(@PathVariable String name, @RequestBody List<Map<String, String>> input) {
         Optional<CourseDTO> optionalCourseDTO = teamServices.getCourse(name);
@@ -195,7 +195,7 @@ public class CourseController {
     }
 
 
-    @PostMapping("/{name}/disable")
+    @PutMapping("/{name}/disable")
     @ResponseStatus(HttpStatus.OK)
     public void diableCourse(@PathVariable String name){
         Optional<CourseDTO> optionalCourseDTO = teamServices.getCourse(name);
