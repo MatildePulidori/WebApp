@@ -1,3 +1,6 @@
 [submodule "EsempiLezione_Servetti/EsempiLezione_Servetti/ai20-lessons-code"]
 	path = EsempiLezione_Servetti/EsempiLezione_Servetti/ai20-lessons-code
 	url = https://github.com/internet-applications-at-polito-it/ai20-lessons-code.git
+[submodule "EsempiLezione_Servetti/ai20-lessons-code"]
+	path = EsempiLezione_Servetti/ai20-lessons-code
+	url = https://github.com/internet-applications-at-polito-it/ai20-lessons-code.git
