@@ -1,0 +1,20 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+mat-icon{margin-left: 5%; margin-right: 2%;}
+h2{margin-left: 5%;margin-top: 5%;}
+#subject{margin-left: 5%;}
+mat-sidenav-container{margin: 20px; height:100%}
+h3{ margin: 3%;}
+table{width: 94%; margin: 3%}
+#delete{float: right; margin-right: 5%;}
+#add{float: none; margin-right: 5%; margin-top: 2%;}
+#studentField{width: 40%}
+mat-form-field{margin: 4%;}
+
+#toolbar1{
+  background-color: rgb(56, 71,172);
+  color: white;
+}

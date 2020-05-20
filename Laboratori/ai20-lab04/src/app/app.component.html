@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<html>
+  <title> Laboratorio 04 </title>
+  <meta charset="utf-8">
+<head>
+</head>
+
+<body>
+
+<!-- first toolbar -->
+<mat-toolbar id="toolbar1">
+  <mat-icon #matSideNav (click)="toggleForMenuClick()">menu</mat-icon>
+  <h2>Virtual Labs</h2>
+</mat-toolbar>
+
+<!-- second toolbar -->
+<mat-toolbar id="toolbar2s">
+  <h2 id="subject">Applicazioni Internet</h2>
+</mat-toolbar>
+
+
+<!-- side nav container -->
+<mat-sidenav-container>
+
+      <mat-sidenav mode="side" opened="true" position="start">
+          <div class = "container">
+              <mat-nav-list>
+
+                  <mat-list-item>
+                    Applicazioni Internet
+                  </mat-list-item>
+                  <mat-list-item>
+                    Programmazione di Sistema
+                  </mat-list-item>
+
+              </mat-nav-list>
+          </div>
+      </mat-sidenav>
+
+      <mat-sidenav-content>
+        <mat-tab-group>
+              <mat-tab label="Studenti">
+                <div class="container"><h3>Elenco studenti iscritti al corso</h3></div>
+
+
+                <!-- inserimento nuovo studente-->
+
+                  <mat-form-field id="studentField" >
+                    <input  type="text" id="studentInput" placeholder="Add" matInput [matAutocomplete]="auto" [formControl]="myControl" >
+                  </mat-form-field>
+                  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFunc" (optionSelected)="studentSelected($event)" >
+                    <mat-option *ngFor="let student of filteredAvailableStudents | async " [value]="student">{{student.name +" "+student.firstName}}</mat-option>
+                  </mat-autocomplete>
+                  <mat-button-toggle id="add" ng-click="form.$setPristine()" (click)="addStudent()" >Aggiungi</mat-button-toggle>
+
+
+                <!-- tabella studenti -->
+
+                <table mat-table #table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+
+                  <!--- Note that these columns can be defined in any order.
+                        The actual rendered columns are set as a property on the row definition" -->
+
+                  <!-- CheckBox Column -->
+                  <ng-container matColumnDef="select">
+                    <th mat-header-cell *matHeaderCellDef><mat-checkbox [indeterminate]="someComplete" [checked]="allComplete" (change)="setAll($event.checked)"></mat-checkbox></th>
+                    <td mat-cell *matCellDef="let student" >
+                    <mat-checkbox (change)="onSelection($event, student)" [checked]="student.checked"></mat-checkbox>
+                    </td>
+                  </ng-container>
+
+                  <!-- Id Column -->
+                  <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="id" > Matricola </th>
+                    <td mat-cell *matCellDef="let element" > {{element.id}} </td>
+                  </ng-container>
+
+                  <!-- Name Column -->
+                  <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> Nome </th>
+                    <td mat-cell *matCellDef="let element" > {{element.name}} </td>
+                  </ng-container>
+
+                  <!-- FirstName Column -->
+                  <ng-container matColumnDef="firstName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="firstName"> Cognome </th>
+                    <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
+                  </ng-container>
+
+
+                 <tr mat-header-row *matHeaderRowDef="displayedColums"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColums" ></tr>
+                </table>
+                <mat-paginator [pageSizeOptions]="[3, 5, 10, 20, 35]" showFirstLastButtons >
+                </mat-paginator>
+                <mat-button-toggle id="delete" (click)="deleteStudents()" >Elimina</mat-button-toggle>
+              </mat-tab>
+              <mat-tab label="Gruppi"> <div class="container"><h3>Elenco dei gruppi</h3></div>
+              </mat-tab>
+        </mat-tab-group>
+      </mat-sidenav-content>
+
+</mat-sidenav-container>
+</body>
+
+</html>
