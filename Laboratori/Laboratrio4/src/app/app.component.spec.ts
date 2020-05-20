@@ -19,13 +19,13 @@ describe('AppComponent', () => {
   it(`should have as title 'ai20-lab04'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('ai20-lab04');
+    expect(app.title).toEqual('Laboratrio4');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('ai20-lab04 app is running!');
+    expect(compiled.querySelector('.content span').textContent).toContain('Laboratrio4 app is running!');
   });
 });
