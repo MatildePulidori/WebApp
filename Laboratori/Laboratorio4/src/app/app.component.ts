@@ -16,7 +16,7 @@ import {MatTableDataSource} from "@angular/material/table";
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit{
-  title = 'Laboratrio4';
+  title = 'Laboratorio4';
   myControl = new FormControl();
   displayedColums: string[] = ['select', 'id', 'name', 'firstName'];
   students:  Student[] = [
