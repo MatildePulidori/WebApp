@@ -1,0 +1,6 @@
+<app-students
+  [enrolledStudents]="students"
+  [notEnrolledStudents]="available_students"
+  (added_students)="addStudent($event)"
+  (students_deleted)="deleteStudents()"
+></app-students>

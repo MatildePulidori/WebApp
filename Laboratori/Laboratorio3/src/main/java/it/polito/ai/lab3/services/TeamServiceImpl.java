@@ -20,12 +20,16 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.security.Principal;
+import java.security.Security;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -53,6 +57,8 @@ public class TeamServiceImpl implements TeamServices {
 
     @Autowired
     TokenRepository tokenRepository;
+
+
 
 
     @Override
@@ -123,7 +129,7 @@ public class TeamServiceImpl implements TeamServices {
     }
 
     @Override
-public boolean addStudentToCourse(String studentId, String courseName) {
+    public boolean addStudentToCourse(String studentId, String courseName) {
 
         if (!courseRepository.existsById(courseName)) {
             throw new CourseNotFoundException("Corso non trovato.");
@@ -133,9 +139,15 @@ public boolean addStudentToCourse(String studentId, String courseName) {
             throw new StudentNotFoundException("Studente non trovato.");
         }
 
+
+
         Course c = courseRepository.getOne(courseName);
         if (!c.isEnabled()) throw new CourseNotEnabledException("Corso non abilitato.");
 
+        String usernameTeacher = SecurityContextHolder.getContext().getAuthentication().getName();
+        if(usernameTeacher.compareTo(c.getTeacher().getId())!=0){
+            throw new TeamServiceException("Docente non autorizzato per questo corso");
+        }
 
         Student s = studentRepository.getOne(studentId);
 

@@ -1,0 +1,25 @@
+
+<mat-dialog-content *ngIf="!data.logged">
+  <h3>Login</h3>
+  <form [formGroup]="loginForm">
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input type="email" matInput placeholder="" formControlName="email">
+    <mat-error *ngIf="loginForm.controls.email.errors">{{getErrorMessageEmail()}}</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input type="password" matInput  placeholder="" formControlName="password">
+    <mat-error *ngIf="loginForm.controls.password.errors">{{getErrorMessagePassword()}}</mat-error>
+  </mat-form-field>
+  </form>
+
+  <mat-dialog-actions>
+  <button mat-button mat-raised-button color="primary" (click)="loginUser()">Login</button>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
+  </mat-dialog-actions>
+</mat-dialog-content>
+
+<h3 *ngIf="data.logged">Logout </h3>
+<span *ngIf="data.logged">Logout avvenuto con successo.</span>

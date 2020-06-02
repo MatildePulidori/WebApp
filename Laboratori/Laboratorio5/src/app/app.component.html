@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html>
+  <title> Laboratorio 05 </title>
+  <meta charset="utf-8">
+<head>
+</head>
+
+<body>
+
+<!-- first toolbar -->
+<mat-toolbar id="toolbar1">
+  <mat-icon #matSideNav (click)="toggleForMenuClick()">menu</mat-icon>
+  <a routerLink="/home" ><h2 id="title">Virtual Labs</h2></a>
+  <span class="example-fill-remaining-space"></span>
+  <span><button mat-raised-button color="primary" (click)="openDialog()">{{( logged == true )? 'Logout': 'Login'}}</button>
+  </span>
+
+
+</mat-toolbar>
+
+
+<!-- second toolbar -->
+<mat-toolbar id="toolbar2s">
+    <h2 id="subject">Applicazioni Internet</h2>
+</mat-toolbar>
+
+
+<!-- side nav container -->
+<mat-sidenav-container>
+
+      <mat-sidenav mode="side" opened="true" position="start">
+          <div class = "container">
+              <mat-nav-list>
+                <a routerLink="teacher/course/applicazioni-internet/students">
+                  <mat-list-item>
+                    Applicazioni Internet
+                  </mat-list-item>
+                </a>
+                  <mat-list-item>
+                    Programmazione di Sistema
+                  </mat-list-item>
+
+              </mat-nav-list>
+          </div>
+      </mat-sidenav>
+
+      <mat-sidenav-content>
+        <nav mat-tab-nav-bar>
+          <a mat-tab-link routerLink="teacher/course/applicazioni-internet/students">
+            <label>Studenti</label>
+          </a>
+
+          <a mat-tab-link mat-tab-link routerLink="teacher/course/applicazioni-internet/groups">
+            <label>Gruppi</label>
+          </a>
+
+          <a mat-tab-link mat-tab-link routerLink="teacher/course/applicazioni-internet/vms">
+            <label>Vms</label>
+          </a>
+
+        </nav>
+        <router-outlet></router-outlet>
+      </mat-sidenav-content>
+
+</mat-sidenav-container>
+
+</body>
+
+</html>
