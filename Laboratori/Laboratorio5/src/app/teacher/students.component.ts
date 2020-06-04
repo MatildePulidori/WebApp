@@ -149,7 +149,7 @@ export class StudentsComponent implements OnInit {
     this.sortedStudents = data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
-        case 'id': return this.compare(a.id, b.id, isAsc);
+        case 'serial': return this.compare(a.id, b.id, isAsc);
         case 'name': return this.compare(a.name, b.name, isAsc);
         case 'firstName': return this.compare(a.firstName, b.firstName, isAsc);
         default: return 0;

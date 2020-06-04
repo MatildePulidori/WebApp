@@ -19,7 +19,7 @@ export class AuthService {
   currentToken = '';
   tokenExpirationTime;
   success = true;
-
+  redirectUrl = '';
 
   login(email: string, password: string): Observable<boolean> {
 
@@ -31,7 +31,7 @@ export class AuthService {
           },
             err => { this.setError();}
         ),
-        map( (data: Token) => { return true;}  ));
+        map( (data: Token) => true  ));
   }
 
   logout(){
@@ -43,7 +43,6 @@ export class AuthService {
   }
 
   setError(){
-    console.log('error in login response');
     this.success = false;
   }
 

@@ -16,14 +16,18 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler):
     Observable<HttpEvent<unknown>> {
     const accessToken = this.auth.getToken();
-    if (accessToken) {
-      const cloned = request.clone({
-        headers: request.headers.set('Authorization', 'Bearer ' + accessToken)
-      });
-      console.log('AuthInterceptor accessToken found: ' + JSON.stringify(accessToken));
-      return next.handle(cloned);
-    } else {
-      console.log('AuthInterceptor accessToken not found');
+    if(request.url !== 'http://localhost:300/login' && request.url !== 'http://localhost:300/signin'
+      && request.url !== 'http://localhost:300/register' && request.url !== 'http://localhost:300/signup') {
+      if (accessToken) {
+        const cloned = request.clone({
+          headers: request.headers.set('Authorization', 'Bearer ' + accessToken)
+        });
+        return next.handle(cloned);
+      } else {
+        return next.handle(request);
+      }
+    } else{
+      console.log('interceptor found request directed to ' + request.url + ' so it returns the request as-is');
       return next.handle(request);
     }
   }

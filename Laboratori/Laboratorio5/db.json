@@ -5,7 +5,7 @@
       "serial": "265353",
       "name": "Pitt",
       "firstName": "Brad",
-      "courseId": 0,
+      "courseId": 1,
       "groupId": 0
     },
     {
@@ -41,7 +41,6 @@
       "groupId": 0
     }
   ],
-
   "users": [
     {
       "email": "olivier@mail.com",

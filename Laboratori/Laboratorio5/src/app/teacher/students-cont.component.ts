@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Student} from "../student.model";
 import {StudentsService} from "../services/students.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-students-cont',
@@ -13,19 +14,20 @@ export class StudentsContComponent implements OnInit {
 
   available_students:  Student[] = [];
 
-  constructor(private studentService:  StudentsService) {
+  constructor(private studentService:  StudentsService, private router: Router) {
   }
 
   ngOnInit(): void {
     this.studentService.getStudentsEnrolled()
-      .subscribe(
-        (data)=> {
-        this.students = data.map( o => Object.setPrototypeOf(o, Student.prototype));
+      .subscribe((data)=> {
+        data.map( o => Object.setPrototypeOf(o, Student.prototype));
+        this.students = data;
       });
     this.studentService.getAvailableStudents()
       .subscribe(
         (data) => {
-          this.available_students = data.map( o => Object.setPrototypeOf(o, Student.prototype));
+          data.map( o => Object.setPrototypeOf(o, Student.prototype));
+          this.available_students = data;
         });
   }
 

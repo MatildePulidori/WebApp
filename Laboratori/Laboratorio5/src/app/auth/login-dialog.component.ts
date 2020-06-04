@@ -2,6 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from "@angular/forms";
 import {AuthService} from "./auth.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {timer} from "rxjs";
 
 @Component({
   selector: 'app-login-dialog',
@@ -10,6 +11,8 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 })
 export class LoginDialogComponent implements OnInit {
 
+  loginSuccess = false;
+  wrongCredentials = false;
   constructor(private auth: AuthService, public  fb: FormBuilder, public dialogRef: MatDialogRef<LoginDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   public loginForm = this.fb.group( {
@@ -20,6 +23,10 @@ export class LoginDialogComponent implements OnInit {
   ngOnInit(): void {
     if(this.data.logged){
       this.auth.logout();
+      const timeout = timer(1000);
+      timeout.subscribe( () => {
+        this.dialogRef.close({authResult: false, email: ''});
+      } );
     }
   }
 
@@ -39,9 +46,15 @@ export class LoginDialogComponent implements OnInit {
   loginUser() {
     this.auth.login(this.loginForm.get('email').value, this.loginForm.get('password').value)
       .subscribe( succes => {
-        this.dialogRef.close(true);
-        }, error => {
-        this.dialogRef.close(false);
-      });
+        this.loginSuccess = true;
+        const timeout = timer(2000);
+        timeout.subscribe( () => {
+          this.loginSuccess = false;
+          this.dialogRef.close({authResult: true, email: this.loginForm.get('email').value});
+        } );
+      }, error => {
+        this.loginSuccess = false;
+        this.wrongCredentials = true;
+      } );
   }
 }
