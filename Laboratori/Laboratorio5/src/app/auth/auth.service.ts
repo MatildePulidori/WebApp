@@ -23,7 +23,7 @@ export class AuthService {
 
   login(email: string, password: string): Observable<boolean> {
 
-    return this.http.post("http://localhost:3000/login", {email, password})
+    return this.http.post("/login", {email, password})
       .pipe(
         tap((data: Token) => {
           this.currentToken = data.accessToken;

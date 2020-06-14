@@ -12,10 +12,10 @@ export class StudentsService {
 
   constructor(private  http: HttpClient) {}
 
-  baseURL = "http://localhost:3000"
-  allStudentsURL = this.baseURL + "/students";
-  studentsEnrolledURL = this.baseURL +"/students?courseId=1";
-  studentsAvailableURL = this.baseURL +"/students?courseId=0";
+
+  allStudentsURL = "/students";
+  studentsEnrolledURL = "/students?courseId=1";
+  studentsAvailableURL = "/students?courseId=0";
 
 
   getStudents(): Observable<Student[]>{
